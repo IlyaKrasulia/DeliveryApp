@@ -1,38 +1,143 @@
 .App {
+  max-width: 640px;
+  margin: 0 auto;
+  padding-top: 5%;
+}
+
+label {
+  cursor: pointer;
+  position: relative;
+  top: -2px;
+  letter-spacing: -0.02em;
+  color: #121313;
+  font-weight: 500;
+}
+
+form {
+  width: 100%;
+  background: #fff;
+  padding: 40px;
+  margin-bottom: 15px;
+  position: relative;
+  top: -20px;
+  border-radius: 0px 0px 15px 15px;
+}
+
+.startEnd {
+  display: flex;
+  gap: 0 50px;
+  margin-bottom: 20px;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 32px;
+}
+
+.inputLabel {
+  margin-bottom: 12px;
+  font-weight: 600;
+  line-height: 22px;
+  cursor: pointer;
+}
+
+.timeInput {
+  max-width: 95px;
+  padding: 12px;
+}
+
+input {
+  border: 1.5px solid #838383;
+  color: #000;
+  border-radius: 5px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+input::placeholder {
+  color: #000;
+  font-size: 16px;
+  font-weight: 500;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.timeInput:focus, 
+.intervalInput:focus,
+.reasonShutdown:focus,
+.priceInput:focus {
+  outline: #F80F63 solid 1.5px;
+  border: 0;
+  transition: all .1s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0 11px;
+  margin-bottom: 30px;
+}
+
+.interval {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.interval label {
+  margin-bottom: 12px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.intervalInput {
+  max-width: 85px;
+  padding: 12px 22px;
+  margin-bottom: 30px;
+}
+
+button {
+  background: #1C1C1C;
+  border-radius: 13px;
+  padding: 16px 40px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.shareWrapper {
+  display: flex;
+  gap: 0 30px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.addShare {
+  background-color: #FFEFF5;
+  border: 1px dashed #F80F63;
+  border-radius: 5px;
+  width: 100px;
+  height: 100px;
+}
+
+.share {
+  background: #EBEBEB;
+  border: 1px solid #C2C2C2;
+  border-radius: 5px;
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+
+.deleteShare {
+  background: #F80F63;
+  border: 1.5px solid #FAFAFF;
+  border-radius: 50%;
+  padding: 1px;
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  cursor: pointer;
+}
+
+.reasonShutdown {
+  padding: 12px 26px;
+  text-align: start;
 }
