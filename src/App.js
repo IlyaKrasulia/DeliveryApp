@@ -27,6 +27,7 @@ function App() {
       startTime: '',
       endTime: '',
       interval: '',
+      checkbox: false,
     },
     validationSchema: !timeDeliveryCheckbox 
     ? Yup.object().shape({
@@ -62,6 +63,7 @@ function App() {
       startTime: '',
       endTime: '',
       interval: '',
+      checkbox: false,
     },
     validationSchema: !timePickupCheckbox 
     ? Yup.object().shape({
@@ -183,7 +185,7 @@ function App() {
 
         
           <div className='checkbox'>
-          <input className='customCheckbox' name='toggle' onChange={() => setTimeDeliveryCheckbox(!timeDeliveryCheckbox)} type="checkbox" id="checkbox-1"/>
+          <input className='customCheckbox' checked={timeDeliveryCheckbox ? true : false} name='toggle' onChange={() => setTimeDeliveryCheckbox(!timeDeliveryCheckbox)} type="checkbox" id="checkbox-1"/>
           <label htmlFor="checkbox-1">цілодобово</label>
           </div>
 
@@ -256,7 +258,7 @@ function App() {
         </div>  
 
         <div className='checkbox'>
-        <input className='customCheckbox' onChange={() => setTimePickupCheckbox(!timePickupCheckbox)} type="checkbox" id="checkbox-1"/>
+        <input name='checkbox' className='customCheckbox' checked={timePickupCheckbox ? true : false} onChange={() => setTimePickupCheckbox(!timePickupCheckbox)} type="checkbox" id="checkbox-1"/>
         <label htmlFor="checkbox-1">цілодобово</label>
         </div>
 
