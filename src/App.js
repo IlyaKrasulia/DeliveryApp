@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormik  } from 'formik';
 import * as Yup from 'yup';
 import InputMask from 'react-input-mask';
@@ -6,26 +6,65 @@ import InputMask from 'react-input-mask';
 import './App.css';
 import Tab from './components/Tab';
 
-import plusIcon from './assets/images/plus.svg';
-import deleteIcon from './assets/images/delete.svg';
+import Shares from './components/Shares';
 
 function App() {
-
   const [ activeTab, setActiveTab ] = useState(0);
   const [ timeDeliveryCheckbox, setTimeDeliveryCheckbox ] = useState(false);
+  const [ timePickupCheckbox, setTimePickupCheckbox ] = useState(false);
+
+  useEffect(() => {
+    console.log(timeDeliveryCheckbox);
+  }, [timeDeliveryCheckbox])
 
 
   const changeTabActive = (index) => {
     index === activeTab ? setActiveTab(0) : setActiveTab(index);
   }
 
-  const validateTimeDelivery  = useFormik({
+  const formTimeDelivery  = useFormik({
     initialValues: {
       startTime: '',
       endTime: '',
       interval: '',
     },
-    validationSchema: Yup.object().shape({
+    validationSchema: !timeDeliveryCheckbox 
+    ? Yup.object().shape({
+      startTime: 
+      Yup.string()
+        .min(4, 'Too Short!')
+        .max(6, 'Too Long!')
+        .required('Required'),
+  
+        endTime: Yup.string()
+        .min(4, 'Too Short!')
+        .max(6, 'Too Long!')
+        .required('Required'),
+  
+        interval: Yup.string()
+        .min(2, 'Too Short!')
+        .max(5, 'Too Long!')
+        .required('Required'),
+    })
+    : Yup.object().shape({
+        interval: Yup.string()
+        .min(2, 'Too Short!')
+        .max(5, 'Too Long!')
+        .required('Required'),
+    }),
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });     
+
+  const formTimePickup  = useFormik({
+    initialValues: {
+      startTime: '',
+      endTime: '',
+      interval: '',
+    },
+    validationSchema: !timePickupCheckbox 
+    ? Yup.object().shape({
       startTime: Yup.string()
         .min(4, 'Too Short!')
         .max(6, 'Too Long!')
@@ -39,7 +78,49 @@ function App() {
         interval: Yup.string()
         .min(2, 'Too Short!')
         .max(5, 'Too Long!')
-        .required('Required')
+        .required('Required'),
+    })
+    : Yup.object().shape({
+        interval: Yup.string()
+        .min(2, 'Too Short!')
+        .max(5, 'Too Long!')
+        .required('Required'),
+    }),
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
+  const priceDeliveryForm  = useFormik({
+    initialValues: {
+      priceDelivery: '',
+      priceDeliveryShare: '',
+    },
+    validationSchema: Yup.object().shape({
+      priceDelivery: Yup.string()
+        .min(1, 'Too Short!')
+        .max(3, 'Too Long!')
+        .required('Required'),
+  
+        priceDeliveryShare: Yup.string()
+        .min(1, 'Too Short!')
+        .max(3, 'Too Long!')
+        .required('Required'),
+    }),
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
+  const offApp  = useFormik({
+    initialValues: {
+      reason: '',
+    },
+    validationSchema: Yup.object().shape({
+      reason: Yup.string()
+        .min(5, 'Too Short!')
+        .max(50, 'Too Long!')
+        .required('Required'),
     }),
     onSubmit: values => {
       alert(JSON.stringify(values, null, 2));
@@ -48,7 +129,7 @@ function App() {
 
   
   return (
-    <div className="App">
+    <div className="App">           
       <div className='tabWrapper'>
         <Tab 
           title={"Час самовивозу"} 
@@ -56,7 +137,7 @@ function App() {
           opened={activeTab===1 ? true : false}
         />
        {activeTab===1 && 
-          <form onSubmit={validateTimeDelivery.handleSubmit}>
+          <form onSubmit={formTimeDelivery.handleSubmit}>
           <div className='startEnd'>
             <div className='input'>
               <label className='inputLabel' htmlFor='startTime'>Початок</label>
@@ -65,8 +146,8 @@ function App() {
                 placeholder='00:00'
                 id='startTime'
                 name='startTime'
-                value={validateTimeDelivery.values.startTime}
-                onChange={validateTimeDelivery.handleChange}
+                value={formTimeDelivery.values.startTime}
+                onChange={formTimeDelivery.handleChange}
                 disabled={timeDeliveryCheckbox ? true : false}
                 mask="12:32"
                 formatChars={{
@@ -75,8 +156,8 @@ function App() {
                   '3': '[0-5]',
                 }}
               /> 
-              {validateTimeDelivery.touched.startTime && validateTimeDelivery.errors.startTime ? (
-              <div>{validateTimeDelivery.errors.startTime}</div>
+              {formTimeDelivery.touched.startTime && formTimeDelivery.errors.startTime ? (
+              <div>{formTimeDelivery.errors.startTime}</div>
               ) : null}
  
             </div>
@@ -87,8 +168,8 @@ function App() {
                 placeholder='00:00'
                 id='endTime'
                 name='endTime'
-                value={validateTimeDelivery.values.endTime}
-                onChange={validateTimeDelivery.handleChange}
+                value={formTimeDelivery.values.endTime}
+                onChange={formTimeDelivery.handleChange}
                 disabled={timeDeliveryCheckbox ? true : false}
                 mask="12:32"
                 formatChars={{
@@ -101,8 +182,8 @@ function App() {
           </div>  
 
         
-          <div className='checkbox' onClick={() => setTimeDeliveryCheckbox(!timeDeliveryCheckbox)}>
-          <input type="checkbox" id="checkbox-1"/>
+          <div className='checkbox'>
+          <input className='customCheckbox' name='toggle' onChange={() => setTimeDeliveryCheckbox(!timeDeliveryCheckbox)} type="checkbox" id="checkbox-1"/>
           <label htmlFor="checkbox-1">цілодобово</label>
           </div>
 
@@ -113,8 +194,8 @@ function App() {
             placeholder='00 хв'
             id='intervalInput'
             name='interval'
-            value={validateTimeDelivery.values.interval}
-            onChange={validateTimeDelivery.handleChange}
+            value={formTimeDelivery.values.interval}
+            onChange={formTimeDelivery.handleChange}
             mask="12хв"
             formatChars={{
               '1': '[0-5]',
@@ -135,42 +216,68 @@ function App() {
           opened={activeTab===2 ? true : false}
         />
         {activeTab===2 && 
-        <form>
+        <form onSubmit={formTimePickup.handleSubmit}>
 
         <div className='startEnd'>
           <div className='input'>
             <label className='inputLabel' htmlFor='startTime'>Початок</label>
-            <input 
+            <InputMask 
               className='timeInput'
               placeholder='00:00'
               id='startTime'
+              disabled={timePickupCheckbox ? true : false}
+              mask="12:32"
+                formatChars={{
+                  '1': '[0-2]',
+                  '2': '[0-9]',
+                  '3': '[0-5]',
+              }}
+              value={formTimePickup.values.startTime}
+              onChange={formTimePickup.handleChange}
             /> 
           </div>
           <div className='input'>
             <label className='inputLabel' htmlFor='endTime'>Кінець</label>
-            <input 
+            <InputMask 
               className='timeInput'
               placeholder='00:00'
+              disabled={timePickupCheckbox ? true : false}
               id='endTime'
+              mask="12:32"
+              formatChars={{
+                  '1': '[0-2]',
+                  '2': '[0-9]',
+                  '3': '[0-5]',
+                }}
+              value={formTimePickup.values.endTime}
+              onChange={formTimePickup.handleChange}
             />
           </div> 
         </div>  
 
         <div className='checkbox'>
-        <input type="checkbox" id="checkbox-1"/>
+        <input className='customCheckbox' onChange={() => setTimePickupCheckbox(!timePickupCheckbox)} type="checkbox" id="checkbox-1"/>
         <label htmlFor="checkbox-1">цілодобово</label>
         </div>
 
         <div className='interval'>
         <label htmlFor='intervalInput'>Укажіть інтервал самовивозу</label>
-        <input
-          className='intervalInput' 
-          placeholder='00 хв'
-          id='intervalInput'
-          />
+        <InputMask
+            className='intervalInput' 
+            placeholder='00 хв'
+            id='intervalInput'
+            name='interval'
+            value={formTimePickup.values.interval}
+            onChange={formTimePickup.handleChange}
+            mask="12хв"
+            formatChars={{
+              '1': '[0-5]',
+              '2': '[0-9]'
+            }}
+            />
         </div>
 
-        <button>Підтвердити</button>
+        <button type='submit'>Підтвердити</button>
 
         </form>}
       </div>
@@ -180,14 +287,16 @@ function App() {
           handleClick={() => changeTabActive(3)}
           opened={activeTab===3 ? true : false}
         />
-        {activeTab===3 && <form>
+        {activeTab===3 && <form onSubmit={priceDeliveryForm.handleSubmit}>
           <div className='input'>
               <label className='inputLabel' htmlFor='deliveryPrice'>Вартість доставки</label>
               <input 
                 className='priceInput'
                 placeholder='0 грн'
                 id='deliveryPrice'
-                type="time"
+                name='priceDelivery'
+                value={priceDeliveryForm.values.priceDelivery}
+                onChange={priceDeliveryForm.handleChange}
               /> 
           </div>
 
@@ -197,9 +306,12 @@ function App() {
                 className='priceInput'
                 placeholder='0 грн'
                 id='deliveryPrice'
+                name='priceDeliveryShare' 
+                value={priceDeliveryForm.values.priceDeliveryShare}
+                onChange={priceDeliveryForm.handleChange}
               /> 
           </div>
-          <button>Підтвердити</button>
+          <button type='submit'>Підтвердити</button>
         </form>}
       </div>
       <div className='tabWrapper'>
@@ -208,21 +320,7 @@ function App() {
           handleClick={() => changeTabActive(4)}
           opened={activeTab===4 ? true : false}
         />
-        {activeTab===4 && <form>
-
-          <div className='shareWrapper'>
-            <div className='share'>
-              <img className='deleteShare' src={deleteIcon} alt="delete"/>
-            </div>
-            <button className='addShare'>
-              <img src={plusIcon} alt="add share"/>
-            </button>
-          </div>
-
-
-        <button>Підтвердити</button>
-
-</form>}
+        {activeTab===4 && <Shares />}
       </div>
       <div className='tabWrapper'>
         <Tab 
@@ -231,7 +329,7 @@ function App() {
           handleClick={() => changeTabActive(5)}
           opened={activeTab===5 ? true : false}
         />
-        {activeTab===5 && <form>
+        {activeTab===5 && <form onSubmit={offApp.handleSubmit}>
 
           <div className='input'>
               <label className='inputLabel' htmlFor='reasonShutdown'>Напишіть повідомлення (причину вимкнення)</label>
@@ -239,10 +337,16 @@ function App() {
                 className='reasonShutdown'
                 placeholder='текст'
                 id='reasonShutdown'
+                name='reason'
+                value={offApp.values.reason}
+                onChange={offApp.handleChange}
               /> 
+              {offApp.touched.reason && offApp.errors.reason ? (
+              <div>{offApp.errors.reason}</div>
+              ) : null}
             </div>
 
-        <button>Підтвердити</button>
+        <button type='submit'>Підтвердити</button>
 
         </form>}
       </div>
