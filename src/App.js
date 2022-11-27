@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useFormik  } from 'formik';
+import { Formik, useFormik  } from 'formik';
 import * as Yup from 'yup';
 import InputMask from 'react-input-mask';
 
@@ -54,6 +54,7 @@ function App() {
         .required('Required'),
     }),
     onSubmit: values => {
+      formTimeDelivery.resetForm()
       alert(JSON.stringify(values, null, 2));
     },
   });     
@@ -89,6 +90,7 @@ function App() {
         .required('Required'),
     }),
     onSubmit: values => {
+      formTimePickup.resetForm();
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -99,17 +101,16 @@ function App() {
       priceDeliveryShare: '',
     },
     validationSchema: Yup.object().shape({
-      priceDelivery: Yup.string()
+      priceDelivery: Yup.number()
         .min(1, 'Too Short!')
-        .max(3, 'Too Long!')
         .required('Required'),
   
-        priceDeliveryShare: Yup.string()
+        priceDeliveryShare: Yup.number()
         .min(1, 'Too Short!')
-        .max(3, 'Too Long!')
         .required('Required'),
     }),
     onSubmit: values => {
+      priceDeliveryForm.resetForm();
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -125,6 +126,7 @@ function App() {
         .required('Required'),
     }),
     onSubmit: values => {
+      offApp.resetForm()
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -300,6 +302,9 @@ function App() {
                 value={priceDeliveryForm.values.priceDelivery}
                 onChange={priceDeliveryForm.handleChange}
               /> 
+              {priceDeliveryForm.touched.startTime && priceDeliveryForm.errors.startTime ? (
+              <div>{priceDeliveryForm.errors.startTime}</div>
+              ) : null}
           </div>
 
           <div className='input'>
@@ -312,6 +317,9 @@ function App() {
                 value={priceDeliveryForm.values.priceDeliveryShare}
                 onChange={priceDeliveryForm.handleChange}
               /> 
+              {priceDeliveryForm.touched.startTime && priceDeliveryForm.errors.startTime ? (
+              <div>{priceDeliveryForm.errors.startTime}</div>
+              ) : null}
           </div>
           <button type='submit'>Підтвердити</button>
         </form>}
