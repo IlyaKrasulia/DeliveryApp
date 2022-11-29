@@ -60,6 +60,10 @@ input::placeholder {
   font-weight: 500;
 }
 
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
 .timeInput:focus, 
 .intervalInput:focus,
 .reasonShutdown:focus,

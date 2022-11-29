@@ -145,21 +145,15 @@ function App() {
           <div className='startEnd'>
             <div className='input'>
               <label className='inputLabel' htmlFor='startTime'>Початок</label>
-              <InputMask 
+              <input 
                 className='timeInput'
-                placeholder='00:00'
+                type='time'
                 id='startTime'
                 name='startTime'
                 value={formTimeDelivery.values.startTime}
                 onChange={formTimeDelivery.handleChange}
                 disabled={timeDeliveryCheckbox ? true : false}
-                mask="12:32"
-                formatChars={{
-                  '1': '[0-2]',
-                  '2': '[0-9]',
-                  '3': '[0-5]',
-                }}
-              /> 
+              />
               {formTimeDelivery.touched.startTime && formTimeDelivery.errors.startTime ? (
               <div>{formTimeDelivery.errors.startTime}</div>
               ) : null}
@@ -167,20 +161,14 @@ function App() {
             </div>
             <div className='input'>
               <label className='inputLabel' htmlFor='endTime'>Кінець</label>
-              <InputMask 
+              <input 
                 className='timeInput'
-                placeholder='00:00'
+                type='time'
                 id='endTime'
                 name='endTime'
                 value={formTimeDelivery.values.endTime}
                 onChange={formTimeDelivery.handleChange}
                 disabled={timeDeliveryCheckbox ? true : false}
-                mask="12:32"
-                formatChars={{
-                  '1': '[0-2]',
-                  '2': '[0-9]',
-                  '3': '[0-5]',
-                }}
               />
             </div> 
           </div>  
@@ -225,34 +213,24 @@ function App() {
         <div className='startEnd'>
           <div className='input'>
             <label className='inputLabel' htmlFor='startTime'>Початок</label>
-            <InputMask 
+            <input
               className='timeInput'
               placeholder='00:00'
               id='startTime'
               disabled={timePickupCheckbox ? true : false}
-              mask="12:32"
-                formatChars={{
-                  '1': '[0-2]',
-                  '2': '[0-9]',
-                  '3': '[0-5]',
-              }}
+              type='time'
               value={formTimePickup.values.startTime}
               onChange={formTimePickup.handleChange}
             /> 
           </div>
           <div className='input'>
             <label className='inputLabel' htmlFor='endTime'>Кінець</label>
-            <InputMask 
+            <input 
               className='timeInput'
               placeholder='00:00'
               disabled={timePickupCheckbox ? true : false}
               id='endTime'
-              mask="12:32"
-              formatChars={{
-                  '1': '[0-2]',
-                  '2': '[0-9]',
-                  '3': '[0-5]',
-                }}
+              type='time'
               value={formTimePickup.values.endTime}
               onChange={formTimePickup.handleChange}
             />
@@ -266,7 +244,7 @@ function App() {
 
         <div className='interval'>
         <label htmlFor='intervalInput'>Укажіть інтервал самовивозу</label>
-        <InputMask
+        <input
             className='intervalInput' 
             placeholder='00 хв'
             id='intervalInput'
