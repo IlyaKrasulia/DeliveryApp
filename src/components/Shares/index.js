@@ -1,40 +1,15 @@
-import React, { useState } from "react";
-import { useFormik  } from 'formik';
+import React, { useState, useRef, useEffect } from "react";
 
 import plusIcon from '../../assets/images/plus.svg';
 import deleteIcon from '../../assets/images/delete.svg';
 
 const Shares = () => {
-    const [ modalOpened, setModalOpened ] = useState(false);
+    const ref = useRef();
+    const [ image, setImage ] = useState();
+    const [ imageUrl, setImageUrl ] = useState();
     const [ shares, setShares ] = useState([
-        {
-            text: '10%',
-            imgUrl: `url(./images/share10.png)`,
-            id: 0
-        },
-        {
-            text: '50%',
-            imgUrl: 'url(./images/share50.png)',
-            id: 1
-        }
+
     ]);
-    const [ myShares, setMyShares ] = useState([
-        {
-            text: '10%',
-            imgUrl: `url(./images/share10.png)`,
-            id: 0
-        },
-        {
-            text: '50%',
-            imgUrl: 'url(./images/share50.png)',
-            id: 1
-        },
-        {
-            text: '30%',
-            imgUrl: 'url(./images/share30.png)',
-            id: 2
-        }
-    ])
 
     const deleteShare = (index) => {
         setShares(shares.filter((it) => it.id !== index))
@@ -42,52 +17,55 @@ const Shares = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault(); 
-        for (let i = 0; i < shares.length; i++) {
-            console.log(shares[i].text);    
-        }
+        shares.length >=1 ? console.log(shares) : console.log('error');
     }
 
-    const addShare = (it) => {
+    const addShare = () => {
         let newObj = {
-            text: it.text,
-            imgUrl: it.imgUrl,
+            imgUrl: imageUrl,
             id: Math.random()
-        };
-        setShares([...shares, newObj]);
-        setModalOpened(false);
+        }
+        setShares([newObj])
     }
+    const fileReader = new FileReader();
+    const uploadImg = (e) => {
+        e.preventDefault();
+        const file = e.target.files[0];
+        setImage(file);
+        fileReader.readAsDataURL(file);
+        fileReader.onloadend = () => {         
+        let newObj = {
+            imgUrl: fileReader.result,
+            id: Math.random()
+        }
+        setShares([...shares, newObj])
+        } 
+        
+    }
+
+    const refInput = () => {
+        ref.current.click();
+    }
+
     
 
     return (
         <>
-           {modalOpened && <div className="modal">
-                <div className="modalWrapper">
-                <div className='shareWrapper' style={{marginBottom: '0'}}>
-                <img className='deleteShare' src={deleteIcon} alt="delete" onClick={() => setModalOpened(false)}/>
-                    {myShares.map((it) => {
-                        return( 
-                            <div onClick={() => addShare(it)} className='share' style={{background: it.imgUrl, backgroundSize: 'cover', cursor: 'pointer'}} key={it.id} ></div>
-                        )
-                        
-                    })}
-                    </div>
-                </div>
-            </div>}
             <form onSubmit={handleSubmit}>
-
                 <div className='shareWrapper'>
                     {shares.map((it) => {
                         return( 
-                            <div className='share' style={{background: it.imgUrl, backgroundSize: 'cover'}} key={it.id} >
+                            <div className='share' style={{background: `url(${it.imgUrl})`, backgroundSize: 'cover'}} key={it.id} >
                             <img className='deleteShare' src={deleteIcon} alt="delete" onClick={() => deleteShare(it.id)}/>
                             </div>
                         )
                         
                     })}
                         
-                <div className='addShare' onClick={() => setModalOpened(true)}>
+                <div className='addShare' onClick={() => refInput()}>
                     <img src={plusIcon} alt="add share"/>
                 </div>
+                <input ref={ref} className="uploadImg" type='file' accept="image/*,.png,.jpg" onChange={e => uploadImg(e)}/>
                 </div>
     
     

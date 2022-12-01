@@ -202,3 +202,10 @@ button {
   background-size: 12px;
   transition: all .3s;
 }
+
+.uploadImg {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  bottom: 0;
+}
