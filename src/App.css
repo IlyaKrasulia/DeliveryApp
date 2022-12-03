@@ -44,7 +44,7 @@ form {
 
 .timeInput {
   max-width: 95px;
-  padding: 12px;
+  padding: 0 12px;
 }
 
 input {
@@ -52,12 +52,15 @@ input {
   color: #000;
   border-radius: 5px;
   text-align: center;
+  height: 43px;
 }
 
 input::placeholder {
   color: #000;
   font-size: 16px;
   font-weight: 500;
+  position: relative;
+  top: 2px;
 }
 
 input::-webkit-calendar-picker-indicator {
@@ -82,6 +85,7 @@ input::-webkit-calendar-picker-indicator {
 
 .interval {
   display: flex;
+  margin-bottom: 30px;
   flex-direction: column;
 }
 
@@ -91,8 +95,7 @@ input::-webkit-calendar-picker-indicator {
 
 .intervalInput {
   max-width: 85px;
-  padding: 12px 22px;
-  margin-bottom: 30px;
+  padding: 0 22px;
 }
 
 button {
@@ -118,10 +121,17 @@ button {
   background-color: #FFEFF5;
   border: 1px dashed #F80F63;
   border-radius: 5px;
-  padding: 35px 0;
-  text-align: center;
   width: 100px;
+  height: 100px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addShare img {
+  width: 16px;
+  height: 16px;
 }
 
 .share {
@@ -145,28 +155,13 @@ button {
 }
 
 .reasonShutdown {
-  padding: 12px 26px;
+  padding: 0 26px;
   text-align: start;
 }
 
-.modal {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.116);
-  z-index: 99;
-}
-
-.modalWrapper {
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 0 auto;
-  top: 40%;
+.reasonShutdown::placeholder {
   position: relative;
-  width: 50%;
+  top: 1px;
 }
 
 .customCheckbox {
